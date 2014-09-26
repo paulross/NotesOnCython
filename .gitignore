@@ -1,0 +1,3 @@
+doc/build/*
+src/build/*
+src/__pycache__/*

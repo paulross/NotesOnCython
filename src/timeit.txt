@@ -1,0 +1,12 @@
+python3 setup.py build_ext --inplace
+
+python3 -m timeit -s "import Fibo" "Fibo.fib(30)"
+python3 -m timeit -s "import cyFibo" "cyFibo.fib(30)"
+python3 -m timeit -s "import cyFibo" "cyFibo.fib_int(30)"
+python3 -m timeit -s "import cyFibo" "cyFibo.fib_cdef(30)"
+python3 -m timeit -s "import cyFibo" "cyFibo.fib_cpdef(30)"
+python3 -m timeit -s "import Fibo" "Fibo.fib_cached(30)"
+
+
+python3 -m timeit -s "import cyStdDev; import numpy as np; a = np.arange(1e6)" "cyStdDev.cStdDev(a)"
+
