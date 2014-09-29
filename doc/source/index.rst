@@ -3,21 +3,20 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-A Note on Cython's ``def``, ``cdef`` and ``cpdef`` Function Declarations
+Musings on Cython
 ============================================================================
 
-This technical note looks at the different ways of declaring functions in Cython and what the performance impact is of each one.
+This technical note looks at the different ways of declaring functions in Cython and the performance impact of these choices. We also look at some real world comparions of Python, Cython and C with some surprising results.
 
 .. toctree::
     :maxdepth: 2
 
     function_declarations
     fibo_speed
-    std_dev
     classes
-    edge_cases
-    economics
+    std_dev
     misc
+    economics
 
 Indices and tables
 ==================

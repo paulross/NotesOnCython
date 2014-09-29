@@ -8,7 +8,10 @@
 How Fast are ``def`` ``cdef`` ``cpdef``?
 ==============================================================
 
-Here is an example of computing the Fibonacci series [**badly**] that will be done in Python, Cython and C.
+Code Example
+---------------------
+
+Here is an example of computing the Fibonacci series (badly) that will be done in Python, Cython and C.
 
 First up, Python [*Fibo.py*]::
 
@@ -34,7 +37,6 @@ Optimised Cython where we specify the argument type [*cyFibo.pyx*]::
 In Cython calling C generated code. Here we use a ``def`` to call a ``cdef`` that does the body of the work [*cyFibo.pyx*]::
 
     def fib_cdef(int n):
-        """Call a cdef."""
         return fib_in_c(n)
 
     cdef int fib_in_c(int n):
@@ -132,16 +134,16 @@ Now time these algorithms on Fibonacci(30) thus::
 
 Gives:
 
-======== =========================== =============   ============
-Language Function call               Time (ms)       Improvement
-======== =========================== =============   ============
+======== =========================== =============   =================
+Language Function call               Time (ms)       Speed, Python = 1
+======== =========================== =============   =================
 Python   ``Fibo.fib(30)``            390             x 1
 Cython   ``cyFibo.fib(30)``          215             x 1.8
 Cython   ``cyFibo.fib_int(30)``      154             x 2.5
 Cython   ``cyFibo.fib_cdef(30)``     5.38            x72
 Cython   ``cyFibo.fib_cpdef(30)``    32.5            x12
 C        ``cFibo.fib(30)``           5.31            x73
-======== =========================== =============   ============
+======== =========================== =============   =================
 
 Graphically:
 
@@ -156,7 +158,7 @@ The conclusions that I draw from this are:
 * Cython's ``cdef`` is insignificantly different from the more complicated C extension that is our best attempt.
 
 The Importance of the Algorithm
-================================
+-------------------------------------
 
 So far we have looked at pushing code into Cython/C to get a performance gain however there is a glaring error in our code. The algorithm we have been using is **very** inefficient. Here is different algorithm, in pure Python, that will beat all of those above by a huge margin [#]_:
 

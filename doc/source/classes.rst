@@ -1,4 +1,4 @@
-Speed Comparison of Cython Classes using ``def``, ``cdef`` and ``cpdef``
+Performance of Cython Classes using ``def``, ``cdef`` and ``cpdef``
 ===========================================================================
 
 Here we have a class ``A`` with the three differenct types of method declarations and some means of exercising each one::
@@ -14,15 +14,18 @@ Here we have a class ``A`` with the three differenct types of method declaration
         def test_def(self, long num):
             while num > 0:
                 self.d()
+                num -= 1
             
         def test_cdef(self, long num):
             while num > 0:
                 self.c()
+                num -= 1
             
         def test_cpdef(self, long num):
             while num > 0:
                 self.p()
-            
+                num -= 1
+
 We can time the execution of these thus with 1e6 calls::
 
     $ python3 -m timeit -s "import cyClassMethods" -s "a = cyClassMethods.A()" "a.test_def(1000000)"
@@ -80,8 +83,12 @@ Which we can time with::
 
 Compared with the Cython ``cdef`` function these are x84 and x85 respectively.
 
-Graphically the comparison looks like this:
+Graphically the comparison looks like this (note log scale):
 
 .. image:: images/Classes.ods.png
 
+My conclusions:
 
+* Cython gives around x4 improvement for normal ``def`` method calls.
+* ``cdef`` method calls of Cython classes, or those deriving from them, can give a x80 or so performance improvement over pure Python.
+* ``cpdef`` holds up well as a 'safe' ``cdef`` unless subclassing is used when the cost of the (Python) method lookup brings ``cpdef`` back to ``def`` level.

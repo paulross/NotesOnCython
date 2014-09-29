@@ -1,35 +1,41 @@
 .. toctree::
     :maxdepth: 3
 
-=============================================
-Numerical Performance on a Vector
-=============================================
+==========================================================
+The Performance of Python, Cython and C on a Vector
+==========================================================
 
 Lets look at a real world numerical problem, namely computing the standard deviation of a million floats using:
 
-* Pure Python
-* Numpy
+* Pure Python (using a list of values).
+* Numpy.
 * Cython expecting a numpy array - *naive*
 * Cython expecting a numpy array - *optimised*
 * C (called from Cython)
 
-The pure Python code looks like this::
+The pure Python code looks like this, where the argument is a list of values::
 
+    # File: StdDev.py
+    
     import math
     
     def pyStdDev(a):
         mean = sum(a) / len(a)
         return math.sqrt((sum(((x - mean)**2 for x in a)) / len(a)))
 
-The numpy code::
+The numpy code works on an ndarray::
+
+    # File: StdDev.py
 
     import numpy as np
     
     def npStdDev(a):
         return np.std(a)
 
-The Cython code::
+The naive Cython code also expects an ndarray::
 
+    # File: cyStdDev.pyx
+    
     import math
     
     def cyStdDev(a):
@@ -39,6 +45,8 @@ The Cython code::
         return math.sqrt(wSq.mean())
 
 The optimised Cython code::
+
+    # File: cyStdDev.pyx
 
     cdef extern from "math.h":
         double sqrt(double m)
@@ -61,6 +69,8 @@ The optimised Cython code::
         return sqrt(v / n)
 
 Finally Cython calling pure 'C', here is the Cython code::
+
+    # File: cyStdDev.pyx
 
     cdef extern from "std_dev.h":
         double std_dev(double *arr, size_t siz)
@@ -120,7 +130,7 @@ Timing these is done, respectively by:
     # Cython calling C
     python3 -m timeit -s "import cyStdDev; import numpy as np; a = np.arange(1e6)" "cyStdDev.cStdDev(a)"
 
-In summary [#]_:
+In summary:
 
 =================   ============    ==================  =====================
 Method              Time (ms)       Compared to Python  Compared to Numpy
@@ -139,7 +149,7 @@ Or graphically:
 The conclusions that I draw from this are:
 
 * Numpy is around 30x faster than pure Python in this case.
-* Surprisingly Numpy was not the fastest, even naive Cython can get close to its performance.
+* Surprisingly Numpy was not the fastest, even naive Cython can get close to its performance [#]_.
 * Optimised Cython and pure 'C' beat Numpy by a significant margin (x2.7)
 * Optimised Cython performs as well as pure 'C' but the Cython code is rather opaque.
 

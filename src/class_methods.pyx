@@ -20,4 +20,3 @@ cdef class A(object):
         while num > 0:
             self.p()
             num -= 1
-            
