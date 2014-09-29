@@ -16,7 +16,6 @@ This technical note looks at the different ways of declaring functions in Cython
     classes
     std_dev
     misc
-    economics
 
 Indices and tables
 ==================
