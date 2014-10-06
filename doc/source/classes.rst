@@ -85,7 +85,7 @@ Compared with the Cython ``cdef`` function these are x84 and x85 respectively.
 
 Graphically the comparison looks like this (note log scale):
 
-.. image:: images/Classes.ods.png
+.. image:: images/Classes.png
 
 My conclusions:
 

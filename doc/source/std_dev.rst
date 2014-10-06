@@ -144,7 +144,7 @@ Cython calling C    2.22            x82                 x2.7
 
 Or graphically:
 
-.. image:: images/Results.ods.png
+.. image:: images/Results.png
 
 The conclusions that I draw from this are:
 
