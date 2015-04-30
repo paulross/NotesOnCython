@@ -4,3 +4,4 @@ src/__pycache__/*
 src/*.pyd
 src/*.so
 src/*.pyc
+src/cy*.c
