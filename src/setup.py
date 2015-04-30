@@ -26,7 +26,7 @@ from Cython.Distutils import build_ext
 
 DEBUG = False
 
-extra_compile_args = ["-std=c99", ]
+extra_compile_args = ["-std=c99"]
 if DEBUG:
     extra_compile_args += ["-g3", "-O0", "-DDEBUG=1"]
 else:
@@ -37,17 +37,28 @@ else:
 setup(
     cmdclass={'build_ext': build_ext},
     ext_modules=[
-        Extension("cyFibo", ["cyFibo.pyx"]),
+        Extension(
+            "cyFibo",
+            sources=["cyFibo.pyx"],
+            extra_compile_args=extra_compile_args),
         Extension(
             "cyStdDev",
             sources=["cyStdDev.pyx", 'std_dev.c'],
-            include_dirs=[numpy.get_include()]),
-        Extension("cyCodeValue", ["code_value.pyx"]),
+            include_dirs=[numpy.get_include()],
+            extra_compile_args=extra_compile_args),
+        Extension(
+            "cyCodeValue",
+            sources=["code_value.pyx"],
+            extra_compile_args=extra_compile_args),
         Extension(
             "cFibo",
             sources=['cFiboExt.c'],
             extra_compile_args=extra_compile_args),
-        Extension("cyCdefRet", ["cdef_ret.pyx"]),
-        Extension("cyClassMethods", ["class_methods.pyx"]),
-    ]
-)
+        Extension(
+            "cyCdefRet",
+            sources=["cdef_ret.pyx"],
+            extra_compile_args=extra_compile_args),
+        Extension(
+            "cyClassMethods",
+            ["class_methods.pyx"],
+            extra_compile_args=extra_compile_args)])
