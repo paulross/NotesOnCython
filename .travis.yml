@@ -20,3 +20,4 @@ script:
   - python -m timeit -s "import cyFibo" "cyFibo.fib_int_cpdef(30)"
   - python -m timeit -s "import Fibo" "Fibo.fib_cached(30)"
   - python -m timeit -s "import cyStdDev; import numpy as np; a = np.arange(1e6)" "cyStdDev.cStdDev(a)"
+  - python FiboTimeit.py
