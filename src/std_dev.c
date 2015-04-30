@@ -7,7 +7,6 @@ double std_dev(double *arr, size_t siz) {
 	double sum_sq;
 	double *pVal;
 	double diff;
-	double ret;
 
 	pVal = arr;
 	for (size_t i = 0; i < siz; ++i, ++pVal) {
