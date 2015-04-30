@@ -1,3 +1,6 @@
 doc/build/*
 src/build/*
 src/__pycache__/*
+src/*.pyd
+src/*.so
+src/*.pyc
