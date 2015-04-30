@@ -90,30 +90,49 @@ Finally a C extension. We expect this to be the fastest way of computing the res
 
     /********* The rest is standard Python Extension code ***********/
 
+
     static PyMethodDef cFiboExt_methods[] = {
-        {"fib", python_fibonacci, METH_O, PyDoc_STR("Fibonacci value.")},
-        {NULL, NULL}           /* sentinel */
+    {"fib", python_fibonacci, METH_O, "Fibonacci value."},
+    {NULL, NULL, 0, NULL}           /* sentinel */
     };
+
+
+    #if PY_MAJOR_VERSION >= 3
+
+    /********* PYTHON 3 Boilerplate ***********/
 
     PyDoc_STRVAR(module_doc, "Fibonacci in C.");
 
     static struct PyModuleDef cFiboExt = {
-        PyModuleDef_HEAD_INIT,
-        "cFibo",
-        module_doc,
-        -1,
-        cFiboExt_methods,
-        NULL,
-        NULL,
-        NULL,
-        NULL
+    PyModuleDef_HEAD_INIT,
+    "cFibo",
+    module_doc,
+    -1,
+    cFiboExt_methods,
+    NULL,
+    NULL,
+    NULL,
+    NULL
     };
 
     PyMODINIT_FUNC
     PyInit_cFibo(void)
     {
-        return PyModule_Create(&cFiboExt);
+    return PyModule_Create(&cFiboExt);
     }
+
+    #else
+
+    /********* PYTHON 2 Boilerplate ***********/
+
+
+    PyMODINIT_FUNC
+    initcFibo(void)
+    {
+    (void) Py_InitModule("cFibo", cFiboExt_methods);
+    }
+
+    #endif
 
 Benchmarks
 -------------------
