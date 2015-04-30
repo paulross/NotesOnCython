@@ -2,14 +2,12 @@ language: python
 python:
   - "2.7"
   - "3.4"
-virtualenv:
-  system_site_packages: true
 before_install:
-  - sudo add-apt-repository ppa:cython-dev/master-ppa -y
   - sudo apt-get update -qq
-  - sudo apt-get install cython libatlas-dev libatlas3gf-base
+  - sudo apt-get install libatlas-dev libatlas3gf-base
 install:
   - pip install numpy
+  - pip install cython
   - python setup.py build_ext --inplace
 script:
   - python -m timeit -s "import Fibo" "Fibo.fib(30)"
