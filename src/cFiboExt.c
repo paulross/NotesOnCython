@@ -13,7 +13,7 @@ static PyObject *python_fibonacci(PyObject *module, PyObject *arg) {
     PyObject *ret = NULL;
     assert(arg);
     Py_INCREF(arg);
-    if (! PyLong_CheckExact(arg)) {
+    if (!PyLong_Check(arg) & !PyInt_Check(arg)) {
     	PyErr_SetString(PyExc_ValueError, "Argument is not an integer.");
     	goto except;
     }
