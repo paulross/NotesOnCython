@@ -11,6 +11,7 @@ install:
   - cd src
   - python setup.py build_ext --inplace
 script:
+  - python -m unittest discover ./src
   - python -m timeit -s "import Fibo" "Fibo.fib(30)"
   - python -m timeit -s "import cyFibo" "cyFibo.fib(30)"
   - python -m timeit -s "import cyFibo" "cyFibo.fib_int(30)"
