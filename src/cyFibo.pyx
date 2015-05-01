@@ -33,3 +33,10 @@ cpdef fib_cpdef(int n):
     if n < 2:
         return n
     return fib_cpdef(n-2) + fib_cpdef(n-1)
+
+
+cpdef int fib_int_cpdef(int n):
+    """Typed cpdef."""
+    if n < 2:
+        return n
+    return fib_int_cpdef(n-2) + fib_int_cpdef(n-1)
