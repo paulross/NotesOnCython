@@ -24,7 +24,7 @@ static PyObject *python_fibonacci(PyObject *module, PyObject *arg) {
     long ordinal = PyLong_AsLong(arg);
     long result = c_fibonacci(ordinal);
     ret = PyLong_FromLong(result);
-    assert(! PyErr_Occurred());
+    assert(!PyErr_Occurred());
     assert(ret);
     goto finally;
 except:
