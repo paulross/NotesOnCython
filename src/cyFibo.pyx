@@ -11,31 +11,32 @@ def fib(n):
     return fib(n-2) + fib(n-1)
 
 
-def fib_int(int n):
+def fib_int(long n):
     """Vanilla Python with type specification."""
     if n < 2:
         return n
     return fib_int(n-2) + fib_int(n-1)
 
 
-def fib_cdef(int n):
+def fib_cdef(long n):
     """Call a cdef."""
     return fib_in_c(n)
 
 
-cdef int fib_in_c(int n):
+cdef long fib_in_c(long n):
     if n < 2:
         return n
     return fib_in_c(n-2) + fib_in_c(n-1)
 
-cpdef fib_cpdef(int n):
+
+cpdef fib_cpdef(long n):
     """Basic cpdef."""
     if n < 2:
         return n
     return fib_cpdef(n-2) + fib_cpdef(n-1)
 
 
-cpdef int fib_int_cpdef(int n):
+cpdef long fib_int_cpdef(long n):
     """Typed cpdef."""
     if n < 2:
         return n
