@@ -12,13 +12,6 @@ install:
   - python setup.py build_ext --inplace
 script:
   - python -m unittest discover
-  - python -m timeit -s "import Fibo" "Fibo.fib(30)"
-  - python -m timeit -s "import cyFibo" "cyFibo.fib(30)"
-  - python -m timeit -s "import cyFibo" "cyFibo.fib_int(30)"
-  - python -m timeit -s "import cyFibo" "cyFibo.fib_cdef(30)"
-  - python -m timeit -s "import cyFibo" "cyFibo.fib_cpdef(30)"
-  - python -m timeit -s "import cyFibo" "cyFibo.fib_int_cpdef(30)"
-  - python -m timeit -s "import cFibo" "cFibo.fib(30)"
-  - python -m timeit -s "import Fibo" "Fibo.fib_cached(30)"
+  - python fibo_bench.py
   - python -m timeit -s "import cyStdDev; import numpy as np; a = np.arange(1e6)" "cyStdDev.cStdDev(a)"
   - python FiboTimeit.py
