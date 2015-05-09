@@ -1,4 +1,5 @@
-from timeit import main as timeit
+from timeit import Timer
+from timeit import main as console_timeit
 from collections import namedtuple, OrderedDict
 
 Bench = namedtuple('Bench', ['setup', 'call'])
@@ -19,15 +20,9 @@ methods = OrderedDict([
 def main():
     for method in methods:
         print(method)
-        timeit([
+        console_timeit([
             methods[method].setup,
-            methods[method].call])
-    for name in methods:
-        method = methods[name]
-        timer = Timer(method.call.format(30), setup=method.setup)
-        print(u"{}: {:g} ms".format(
-            name, min(timer.repeat(3, 100)) * 1e3 / 100))
-
+            methods[method].call.format(30)])
 
 if __name__ == '__main__':
     main()
