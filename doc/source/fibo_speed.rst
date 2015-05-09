@@ -44,125 +44,49 @@ In Cython calling C generated code. Here we use a ``def`` to call a ``cdef`` tha
             return n
         return fib_in_c(n-2) + fib_in_c(n-1)
 
-Now a recursive ``cpdef``::
+Now a recursive ``cpdef`` returning a python object::
 
     cpdef fib_cpdef(int n):
         if n < 2:
             return n
         return fib_cpdef(n-2) + fib_cpdef(n-1)
 
+A recursive ``cpdef`` returning an int::
+
+    cpdef int fib_typed_cpdef(int n):
+        if n < 2:
+            return n
+        return fib_typed_cpdef(n-2) + fib_typed_cpdef(n-1)
+
 Finally a C extension. We expect this to be the fastest way of computing the result given the algorithm we have chosen:
 
-.. code-block:: c
-
-    #include "Python.h"
-
-    /* This is the function that actually computes the Fibonacci value. */
-    static long c_fibonacci(long ord) {
-        if (ord < 2) {
-            return ord;
-        }
-        return c_fibonacci(ord - 2) + c_fibonacci(ord -1);
-    }
-
-    /* The Python interface to the C code. */
-    static PyObject *python_fibonacci(PyObject *module, PyObject *arg) {
-        PyObject *ret = NULL;
-        assert(arg);
-        Py_INCREF(arg);
-        if (! PyLong_CheckExact(arg)) {
-            PyErr_SetString(PyExc_ValueError, "Argument is not an integer.");
-            goto except;
-        }
-        long ordinal = PyLong_AsLong(arg);
-        long result = c_fibonacci(ordinal);
-        ret = PyLong_FromLong(result);
-        assert(! PyErr_Occurred());
-        assert(ret);
-        goto finally;
-    except:
-        Py_XDECREF(ret);
-        ret = NULL;
-    finally:
-        Py_DECREF(arg);
-        return ret;
-    }
-
-    /********* The rest is standard Python Extension code ***********/
-
-
-    static PyMethodDef cFiboExt_methods[] = {
-    {"fib", python_fibonacci, METH_O, "Fibonacci value."},
-    {NULL, NULL, 0, NULL}           /* sentinel */
-    };
-
-
-    #if PY_MAJOR_VERSION >= 3
-
-    /********* PYTHON 3 Boilerplate ***********/
-
-    PyDoc_STRVAR(module_doc, "Fibonacci in C.");
-
-    static struct PyModuleDef cFiboExt = {
-    PyModuleDef_HEAD_INIT,
-    "cFibo",
-    module_doc,
-    -1,
-    cFiboExt_methods,
-    NULL,
-    NULL,
-    NULL,
-    NULL
-    };
-
-    PyMODINIT_FUNC
-    PyInit_cFibo(void)
-    {
-    return PyModule_Create(&cFiboExt);
-    }
-
-    #else
-
-    /********* PYTHON 2 Boilerplate ***********/
-
-
-    PyMODINIT_FUNC
-    initcFibo(void)
-    {
-    (void) Py_InitModule("cFibo", cFiboExt_methods);
-    }
-
-    #endif
+.. literalinclude:: ../../src/cFiboExt.c
+   :language: c
 
 Benchmarks
 -------------------
 
-First a correctness check on Fibonacci(30)::
+First a correctness check on the methods::
 
-    $ python3 -c "import Fibo, cyFibo, cFibo; print(Fibo.fib(30) == cyFibo.fib(30) == cyFibo.fib_int(30) == cyFibo.fib_cdef(30) == cyFibo.fib_cpdef(30) == cFibo.fib(30))"
-    True
+    python -m unittest discover
 
 Now time these algorithms on Fibonacci(30) thus::
 
-    $ python3 -m timeit -s "import Fibo" "Fibo.fib(30)"
-    $ python3 -m timeit -s "import cyFibo" "cyFibo.fib(30)"
-    $ python3 -m timeit -s "import cyFibo" "cyFibo.fib_int(30)"
-    $ python3 -m timeit -s "import cyFibo" "cyFibo.fib_cdef(30)"
-    $ python3 -m timeit -s "import cyFibo" "cyFibo.fib_cpdef(30)"
-    $ python3 -m timeit -s "import cFibo" "cFibo.fib(30)"
+    python fibo_bench.py
 
 Gives:
 
-======== =========================== =============   =================
-Language Function call               Time (ms)       Speed, Python = 1
-======== =========================== =============   =================
-Python   ``Fibo.fib(30)``            390             x 1
-Cython   ``cyFibo.fib(30)``          215             x 1.8
-Cython   ``cyFibo.fib_int(30)``      154             x 2.5
-Cython   ``cyFibo.fib_cdef(30)``     5.38            x72
-Cython   ``cyFibo.fib_cpdef(30)``    32.5            x12
-C        ``cFibo.fib(30)``           5.31            x73
-======== =========================== =============   =================
+======== ============================ =============   =================
+Language Function call                Time (ms)       Speed, Python = 1
+======== ============================ =============   =================
+Python   ``Fibo.fib(30)``             571             x1
+Cython   ``cyFibo.fib(30)``           229             x2.5
+Cython   ``cyFibo.fib_int(30)``       165             x3.5
+Cython   ``cyFibo.fib_cdef(30)``      7.31            x78
+Cython   ``cyFibo.fib_cpdef(30)``     39.6            x14
+Cython   ``cyFibo.fib_int cpdef(30)`` 5.61            x102
+C        ``cFibo.fib(30)``            6.75            x85
+======== ============================ =============   =================
 
 Graphically:
 
@@ -171,15 +95,24 @@ Graphically:
 The conclusions that I draw from this are:
 
 * Naive Cython does speed things up, but not by much (x1.8).
-* Optimised Cython is fairly effortless (in this case) and worthwhile (x2.5).
+* Optimised Cython is fairly effortless (in this case) and worthwhile
+  (x2.5).
+* ``cpdef`` gives a good improvement over ``def`` because the
+  recursive case exploits C functions.
 * ``cdef`` is really valuable (x72).
-* ``cpdef`` gives a good improvement over ``def`` because the recursive case exploits C functions.
-* Cython's ``cdef`` is insignificantly different from the more complicated C extension that is our best attempt.
+* Cython's ``cdef`` is insignificantly different from the more
+  complicated C extension that is our best attempt.
+* ``typed cpdef`` gives the best of two worlds and (in our example) it
+  is even faster than the hand wrapping of the C function.
 
 The Importance of the Algorithm
 -------------------------------------
 
-So far we have looked at pushing code into Cython/C to get a performance gain however there is a glaring error in our code. The algorithm we have been using is **very** inefficient. Here is different algorithm, in pure Python, that will beat all of those above by a huge margin [#]_:
+So far we have looked at pushing code into Cython/C to get a
+performance gain however there is a glaring error in our code. The
+algorithm we have been using is **very** inefficient. Here is
+different algorithm, in pure Python, that will beat all of those above
+by a huge margin [#]_:
 
 .. code-block:: python
 
@@ -207,12 +140,16 @@ Or, graphically:
 
 .. image:: images/CacheComparison.png
 
-In fact our new algorithm is far, far better than that. Here is the O(N) behaviour where N is the Fibonacci ordinal:
+In fact our new algorithm is far, far better than that. Here is the
+O(N) behaviour where N is the Fibonacci ordinal:
 
 .. image:: images/CacheON.png
 
-Hammering a bad algorithm with a fast language is worse than using a good algorithm and a slow language.
+Hammering a bad algorithm with a fast language is worse than using a
+good algorithm and a slow language.
 
 .. rubric:: Footnotes
 
-.. [#] If you are using Python3 you can use the ``functools.lru_cache`` decorator that gives you more control over cache behaviour.
+.. [#] If you are using Python3 you can use the
+       ``functools.lru_cache`` decorator that gives you more control
+       over cache behaviour.
