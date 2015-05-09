@@ -95,15 +95,24 @@ Graphically:
 The conclusions that I draw from this are:
 
 * Naive Cython does speed things up, but not by much (x1.8).
-* Optimised Cython is fairly effortless (in this case) and worthwhile (x2.5).
+* Optimised Cython is fairly effortless (in this case) and worthwhile
+  (x2.5).
+* ``cpdef`` gives a good improvement over ``def`` because the
+  recursive case exploits C functions.
 * ``cdef`` is really valuable (x72).
-* ``cpdef`` gives a good improvement over ``def`` because the recursive case exploits C functions.
-* Cython's ``cdef`` is insignificantly different from the more complicated C extension that is our best attempt.
+* Cython's ``cdef`` is insignificantly different from the more
+  complicated C extension that is our best attempt.
+* ``typed cpdef`` gives the best of two worlds and (in our example) it
+  is even faster than the hand wrapping of the C function.
 
 The Importance of the Algorithm
 -------------------------------------
 
-So far we have looked at pushing code into Cython/C to get a performance gain however there is a glaring error in our code. The algorithm we have been using is **very** inefficient. Here is different algorithm, in pure Python, that will beat all of those above by a huge margin [#]_:
+So far we have looked at pushing code into Cython/C to get a
+performance gain however there is a glaring error in our code. The
+algorithm we have been using is **very** inefficient. Here is
+different algorithm, in pure Python, that will beat all of those above
+by a huge margin [#]_:
 
 .. code-block:: python
 
@@ -131,12 +140,16 @@ Or, graphically:
 
 .. image:: images/CacheComparison.png
 
-In fact our new algorithm is far, far better than that. Here is the O(N) behaviour where N is the Fibonacci ordinal:
+In fact our new algorithm is far, far better than that. Here is the
+O(N) behaviour where N is the Fibonacci ordinal:
 
 .. image:: images/CacheON.png
 
-Hammering a bad algorithm with a fast language is worse than using a good algorithm and a slow language.
+Hammering a bad algorithm with a fast language is worse than using a
+good algorithm and a slow language.
 
 .. rubric:: Footnotes
 
-.. [#] If you are using Python3 you can use the ``functools.lru_cache`` decorator that gives you more control over cache behaviour.
+.. [#] If you are using Python3 you can use the
+       ``functools.lru_cache`` decorator that gives you more control
+       over cache behaviour.
