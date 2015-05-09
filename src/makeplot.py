@@ -7,7 +7,6 @@ seaborn.set(style="white", context="talk")
 time = numpy.array([571, 229, 165, 7.31, 39.6, 5.61, 6.75])
 labels= numpy.array([
     'Python', 'def() naive', 'def() typed', 'cdef()', 'cpdef()', 'cpdef typed', 'C'])
-hlines=numpy.arange(1, 10)
 axes = seaborn.barplot(y=time, x=labels, x_order=labels)
 axes.yaxis.label.set_text("Time (ms)")
 axes.yaxis.grid(color='black', which='both')
