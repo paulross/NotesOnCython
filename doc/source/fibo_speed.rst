@@ -94,12 +94,12 @@ Graphically:
 
 The conclusions that I draw from this are:
 
-* Naive Cython does speed things up, but not by much (x1.8).
+* Naive Cython does speed things up, but not by much (x2.5).
 * Optimised Cython is fairly effortless (in this case) and worthwhile
-  (x2.5).
+  (x3.5).
 * ``cpdef`` gives a good improvement over ``def`` because the
   recursive case exploits C functions.
-* ``cdef`` is really valuable (x72).
+* ``cdef`` is really valuable (x78).
 * Cython's ``cdef`` is insignificantly different from the more
   complicated C extension that is our best attempt.
 * ``typed cpdef`` gives the best of two worlds and (in our example) it
