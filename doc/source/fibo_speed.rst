@@ -144,19 +144,13 @@ Finally a C extension. We expect this to be the fastest way of computing the res
 Benchmarks
 -------------------
 
-First a correctness check on Fibonacci(30)::
+First a correctness check on the methods::
 
-    $ python3 -c "import Fibo, cyFibo, cFibo; print(Fibo.fib(30) == cyFibo.fib(30) == cyFibo.fib_int(30) == cyFibo.fib_cdef(30) == cyFibo.fib_cpdef(30) == cFibo.fib(30))"
-    True
+    python -m unittest discover
 
 Now time these algorithms on Fibonacci(30) thus::
 
-    $ python3 -m timeit -s "import Fibo" "Fibo.fib(30)"
-    $ python3 -m timeit -s "import cyFibo" "cyFibo.fib(30)"
-    $ python3 -m timeit -s "import cyFibo" "cyFibo.fib_int(30)"
-    $ python3 -m timeit -s "import cyFibo" "cyFibo.fib_cdef(30)"
-    $ python3 -m timeit -s "import cyFibo" "cyFibo.fib_cpdef(30)"
-    $ python3 -m timeit -s "import cFibo" "cFibo.fib(30)"
+    python fibo_bench.py
 
 Gives:
 
