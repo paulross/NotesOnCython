@@ -44,12 +44,19 @@ In Cython calling C generated code. Here we use a ``def`` to call a ``cdef`` tha
             return n
         return fib_in_c(n-2) + fib_in_c(n-1)
 
-Now a recursive ``cpdef``::
+Now a recursive ``cpdef`` returning a python object::
 
     cpdef fib_cpdef(int n):
         if n < 2:
             return n
         return fib_cpdef(n-2) + fib_cpdef(n-1)
+
+A recursive ``cpdef`` returning an int::
+
+    cpdef int fib_typed_cpdef(int n):
+        if n < 2:
+            return n
+        return fib_typed_cpdef(n-2) + fib_typed_cpdef(n-1)
 
 Finally a C extension. We expect this to be the fastest way of computing the result given the algorithm we have chosen:
 
