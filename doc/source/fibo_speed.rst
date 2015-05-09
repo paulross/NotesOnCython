@@ -76,16 +76,17 @@ Now time these algorithms on Fibonacci(30) thus::
 
 Gives:
 
-======== =========================== =============   =================
-Language Function call               Time (ms)       Speed, Python = 1
-======== =========================== =============   =================
-Python   ``Fibo.fib(30)``            390             x 1
-Cython   ``cyFibo.fib(30)``          215             x 1.8
-Cython   ``cyFibo.fib_int(30)``      154             x 2.5
-Cython   ``cyFibo.fib_cdef(30)``     5.38            x72
-Cython   ``cyFibo.fib_cpdef(30)``    32.5            x12
-C        ``cFibo.fib(30)``           5.31            x73
-======== =========================== =============   =================
+======== ============================ =============   =================
+Language Function call                Time (ms)       Speed, Python = 1
+======== ============================ =============   =================
+Python   ``Fibo.fib(30)``             571             x1
+Cython   ``cyFibo.fib(30)``           229             x2.5
+Cython   ``cyFibo.fib_int(30)``       165             x3.5
+Cython   ``cyFibo.fib_cdef(30)``      7.31            x78
+Cython   ``cyFibo.fib_cpdef(30)``     39.6            x14
+Cython   ``cyFibo.fib_int cpdef(30)`` 5.61            x102
+C        ``cFibo.fib(30)``            6.75            x85
+======== ============================ =============   =================
 
 Graphically:
 
