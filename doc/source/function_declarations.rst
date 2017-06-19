@@ -21,7 +21,7 @@ The generated code treats every operation as if it was dealing with Python objec
 
 ``cdef`` - Basically, it's C
 --------------------------------
-``cdef`` is used for Cython functions that are intended to be pure 'C' functions. All types *must* be declared. Cython aggressively optimises the the code and there are a number of gotchas. The generated code is about as fast as you can get though.
+``cdef`` is used for Cython functions that are intended to be pure 'C' functions. All types *must* be declared. Cython aggressively optimises the code and there are a number of gotchas. The generated code is about as fast as you can get though.
 
 ``cdef`` declared functions are not visible to Python code that imports the module.
 
