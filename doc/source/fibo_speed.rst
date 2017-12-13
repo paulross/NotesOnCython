@@ -189,7 +189,7 @@ So far we have looked at pushing code into Cython/C to get a performance gain ho
         try:
             val = cache[n]
         except KeyError:
-            val = fib(n-2) + fib(n-1)
+            val = fib_cached(n-2,cache) + fib_cached(n-1,cache)
             cache[n] = val
         return val
 
