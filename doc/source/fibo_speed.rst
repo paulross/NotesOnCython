@@ -46,7 +46,7 @@ In Cython calling C generated code. Here we use a ``def`` to call a ``cdef`` tha
 
 Now a recursive ``cpdef``::
 
-    cpdef fib_cpdef(int n):
+    cpdef int fib_cpdef(int n):
         if n < 2:
             return n
         return fib_cpdef(n-2) + fib_cpdef(n-1)
@@ -160,7 +160,7 @@ Python   ``Fibo.fib(30)``            390             x 1
 Cython   ``cyFibo.fib(30)``          215             x 1.8
 Cython   ``cyFibo.fib_int(30)``      154             x 2.5
 Cython   ``cyFibo.fib_cdef(30)``     5.38            x72
-Cython   ``cyFibo.fib_cpdef(30)``    32.5            x12
+Cython   ``cyFibo.fib_cpdef(30)``    5.45            x72
 C        ``cFibo.fib(30)``           5.31            x73
 ======== =========================== =============   =================
 
