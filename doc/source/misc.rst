@@ -6,9 +6,9 @@ Annotating Code With HTML
 
 Cython has a ``-a`` option which generates an HTML page showing both the Cython code and the C code. It is invoked thus::
 
-    $ cython -z cyFibo.pyx
+    $ cython -a cyFibo.pyx
 
-Here is a screenshot of :download:`the reuslt <_static/cyFibo.html>`. It is colour annotated to show the complexity of the conversion, the more calls into the Python Virtual Machine for each line of Cython then the darker the shade of yellow:
+Here is a screenshot of :download:`the result <_static/cyFibo.html>`. It is colour annotated to show the complexity of the conversion, the more calls into the Python Virtual Machine for each line of Cython then the darker the shade of yellow:
 
 .. image:: images/HTML_Cython.png
     :scale: 80 %
